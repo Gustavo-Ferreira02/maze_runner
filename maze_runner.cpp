@@ -95,19 +95,27 @@ bool is_valid_position(int row, int col) {
     // 2. Verifique se a posição é um caminho válido (maze[row][col] == 'x')
     // 3. Retorne true se ambas as condições forem verdadeiras, false caso contrário
 
-    if (row >= 0 && row < num_rows && col >= 0 && col < num_cols and maze[row][col] == 'x')
+    if (row >= 0 && row < num_rows && col >= 0 && col < num_cols and maze[row][col] == 'x' or maze[row][col] == 's')
     {
         return true;
     }
     else
     {
-        std::cerr << "Erro: Posicao invalida!" << std::endl;
+        //std::cerr << "Erro: Posicao invalida!" << std::endl;
         return false;
     }
 }
 
 // Função principal para navegar pelo labirinto
 bool walk(Position pos) {
+
+    // 4. Verifique se a posição atual é a saída (maze[pos.row][pos.col] == 's')
+    //    Se for, retorne true
+
+    if (maze[pos.row][pos.col] == 's') {
+        return true;
+    }
+
     // 1. Marque a posição atual como visitada (maze[pos.row][pos.col] = '.')
     maze[pos.row][pos.col] = '.';
 
@@ -116,13 +124,6 @@ bool walk(Position pos) {
 
     // 3. Adicione um pequeno atraso para visualização:
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
-
-    // 4. Verifique se a posição atual é a saída (maze[pos.row][pos.col] == 's')
-    //    Se for, retorne true
-    if (maze[pos.row][pos.col] == 's')
-    {
-        return true;
-    }
     
     // 5. Verifique as posições adjacentes (cima, baixo, esquerda, direita)
     //    Para cada posição adjacente:
