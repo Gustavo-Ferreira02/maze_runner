@@ -73,7 +73,7 @@ bool is_valid_position(int row, int col) {
 }
 
 // Função auxiliar para explorar o labirinto
-void explore(Position pos) {
+void walk(Position pos) {
     if (maze[pos.row][pos.col] == 's') {
         std::cout << "Saída encontrada na posição: (" << pos.row << ", " << pos.col << ")" << std::endl;
         return; // Saída encontrada
@@ -104,17 +104,17 @@ void explore(Position pos) {
     if (next_positions.size() > 1) {
         std::vector<std::thread> threads;
         for (size_t i = 1; i < next_positions.size(); ++i) {
-            threads.emplace_back(explore, next_positions[i]); // Cria uma nova thread para cada caminho
+            threads.emplace_back(walk, next_positions[i]); // Cria uma nova thread para cada caminho
         }
 
-        explore(next_positions[0]); // Explora o primeiro caminho na thread atual
+        walk(next_positions[0]); // Explora o primeiro caminho na thread atual
 
         // Junte todas as threads
         for (auto& t : threads) {
             t.join();
         }
     } else if (next_positions.size() == 1) {
-        explore(next_positions[0]); // Apenas um caminho, continue a exploração
+        walk(next_positions[0]); // Apenas um caminho, continue a exploração
     }
 }
 
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    explore(initial_pos); // Começa a exploração do labirinto
+    walk(initial_pos); // Começa a exploração do labirinto
 
     return 0;
 }
